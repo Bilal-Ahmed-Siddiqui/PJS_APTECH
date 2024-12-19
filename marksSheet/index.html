@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marks Sheet Generator</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+        color: #333;
+      }
+      h1 {
+        text-align: center;
+        margin-top: 20px;
+        color: #4caf50;
+      }
+      h3 {
+        text-align: center;
+        margin-left: 20px;
+        color: #333;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        margin: 20px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      input[type="text"],
+      input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      button {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      /* Styling for result display */
+      .result {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+      .result p {
+        font-size: 18px;
+        margin: 10px 0;
+      }
+      .result p strong {
+        color: #4caf50;
+      }
+      /* Center-align the Save and Load buttons */
+      button#saveBtn,
+      button#loadBtn {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Marks Sheet Generator</h1>
+
+    <h3>Add Marks</h3>
+    <form id="marksForm">
+      <div class="form-group">
+        <label for="subject1Name">Subject 1: </label>
+        <input
+          type="text"
+          id="subject1Name"
+          required
+          placeholder="Subject Name"
+        />
+        <input type="number" id="subject1Marks" min="0" max="100" required />
+      </div>
+      <div class="form-group">
+        <label for="subject2Name">Subject 2: </label>
+        <input
+          type="text"
+          id="subject2Name"
+          required
+          placeholder="Subject Name"
+        />
+        <input type="number" id="subject2Marks" min="0" max="100" required />
+      </div>
+      <div class="form-group">
+        <label for="subject3Name">Subject 3: </label>
+        <input
+          type="text"
+          id="subject3Name"
+          required
+          placeholder="Subject Name"
+        />
+        <input type="number" id="subject3Marks" min="0" max="100" required />
+      </div>
+      <button type="submit" id="GenerateButton">Generate Marks Sheet</button>
+    </form>
+
+    <div id="resultDiv" class="result"></div>
+
+    <button id="saveBtn">Save</button>
+    <button id="loadBtn">Load</button>
+
+    <script src="app.js"></script>
+  </body>
+</html>
