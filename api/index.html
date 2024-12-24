@@ -1,12 +1,225 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-</head>
-<body>
-    
+    <style>
+      h2 {
+        font-size: 36px; /* Set the font size */
+        color: #333; /* Text color */
+        font-weight: bold; /* Optional, for emphasis */
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      /* Basic Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Main container */
+      #todosDiv {
+        display: flex;
+        flex-direction: column;
+        gap: 15px; /* Space between each todo item */
+        padding: 20px;
+        background-color: #f4f4f4;
+        max-width: 600px;
+        margin: 0 auto; /* Center the container horizontally */
+      }
+
+      /* Todo item container */
+      .todo-item {
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      }
+
+      /* Hover effect for each todo item */
+      .todo-item:hover {
+        transform: scale(1.03);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Text styles */
+      .todo-userId,
+      .todo-title,
+      .todo-completed {
+        font-size: 16px;
+        margin-bottom: 10px;
+        font-family: "Arial", sans-serif;
+      }
+
+      /* Color styling for each todo attribute */
+      .todo-userId {
+        font-weight: bold;
+        color: #333;
+      }
+
+      .todo-title {
+        color: #2a2a2a;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .todo-completed {
+        font-style: italic;
+      }
+      .todos-header {
+        display: flex; /* Use flexbox to align elements inline */
+        justify-content: space-between; /* Center the items horizontally */
+        align-items: center; /* Center the items vertically */
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 600px; /* Max width for the header */
+        margin: 0 auto; /* Center the header container */
+      }
+
+      .todos-header h2 {
+        color: #333;
+        font-size: 32px;
+        font-weight: 600;
+        margin-right: 20px; /* Add space between the h2 and button */
+      }
+
+      #createTodoBtn {
+        background-color: #007bff;
+        color: white;
+        font-size: 16px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      /* Button hover effect */
+      #createTodoBtn:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+      }
+
+      /* Button focus effect */
+      #createTodoBtn:focus {
+        outline: none;
+        box-shadow: 0 0 5px 2px rgba(0, 123, 255, 0.6);
+      }
+      /* Styling the container for the form */
+      .form-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: 20px auto; /* Center the form container */
+      }
+
+      /* Styling the title of the form */
+      .form-container h3 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+      }
+
+      /* Styling the form group (label and input) */
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 16px;
+        font-weight: bold;
+        color: #555;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+
+      .form-group input:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+      }
+
+      /* Styling the submit button */
+      .submit-btn {
+        background-color: #007bff;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      /* Submit button hover effect */
+      .submit-btn:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+      }
+
+      /* Styling the button focus */
+      .submit-btn:focus {
+        outline: none;
+        box-shadow: 0 0 5px 2px rgba(0, 123, 255, 0.6);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="todos-header">
+      <h2>Todos List</h2>
+      <button id="createTodoBtn">Create Todo</button>
+    </div>
+    <div id="formDiv">
+        <div class="form-container">
+            <h3>Create Todo</h3>
+            <form id="todoForm">
+              <div class="form-group">
+                <label for="title">Title</label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  placeholder="Enter the title"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="userId">User ID</label>
+                <input
+                  type="number"
+                  id="userId"
+                  name="userId"
+                  placeholder="Enter the User ID"
+                  required
+                />
+              </div>
+              <button type="submit" class="submit-btn" id="submitBtn">Submit</button>
+            </form>
+          </div>
+    </div>
+    <div id="todosDiv">
+      
+    </div>
+
     <script src="app.js"></script>
-</body>
+  </body>
 </html>
