@@ -15,6 +15,8 @@ const getTodos = () => {
           <p class="todo-userId">UserId: ${todo.userId}</p>
           <p class="todo-title">Title: ${todo.title}</p>
           <p class="todo-completed">Completed: ${todo.completed}</p>
+          <button onclick="deleteTodo(${todo.id})">Delete</button>
+          <button onclick=(handleUpdate(${todo.id}))>Update</button>
       </div>
         `;
           })
@@ -46,12 +48,12 @@ const createTodo = (data) => {
 };
 
 //update data
-const updateTodo = (id) => {
-  const data = {
-    userId: 540,
-    title: "teach API",
-    completed: false,
-  };
+const updateTodo = (id, data) => {
+  // const data = {
+  //   userId: 540,
+  //   title: "teach API",
+  //   completed: false,
+  // };
   axios
     .put(`${BASE_URL}/${id}`, data)
     .then((response) => {
@@ -70,7 +72,7 @@ const deleteTodo = (id) => {
     .delete(`${BASE_URL}/${id}`)
     .then((response) => {
       if (response.status === 200) {
-        console.log("data deleted successfully");
+        console.log("data deleted successfully", { id });
       } else {
         console.log("error", response.status);
       }
@@ -78,11 +80,7 @@ const deleteTodo = (id) => {
     .catch((error) => console.log(error));
 };
 
-
-
-
 //usage
-
 getTodos();
 
 const createTodoBtn = document.getElementById("createTodoBtn");
@@ -99,24 +97,70 @@ createTodoBtn.addEventListener("click", () => {
   }
 
   isFormVisible = !isFormVisible;
+  const submitBtn = document.getElementById("submitBtn");
+  
+  submitBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const userId = document.getElementById("userId").value;
+    const title = document.getElementById("title").value;
+  
+    const data = {
+      userId: userId,
+      title: title,
+      completed: false,
+    };
+  
+    createTodo(data);
+    formDiv.style.display = "none";
+    isFormVisible = !isFormVisible;
+  });
 });
 
-const submitBtn = document.getElementById("submitBtn");
 
-submitBtn.addEventListener('click', (e)=>{
-  e.preventDefault();
-  const userId = document.getElementById('userId').value;
-  const title = document.getElementById('title').value;
+const handleUpdate = (id) => {
+  axios
+  .get(`${BASE_URL}/${id}`)
+  .then((response) => {
+    if (response.status === 200) {
+      const userId = document.getElementById("userId");
+      const title = document.getElementById("title");
+      userId.value = response.data.userId;
+      title.value = response.data.title;
+    } else {
+      console.log("error", response.status);
+    }
+  })
+  .catch((error) => console.log(error));
+  const submitBtn = document.getElementById("submitBtn");
+  
+  submitBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const userId = document.getElementById("userId").value;
+    const title = document.getElementById("title").value;
+    
+    const data = {
+      userId: userId,
+      title: title,
+      completed: false,
+    };
+    
+    updateTodo(id,data);
+    formDiv.style.display = "none";
+    isFormVisible = !isFormVisible;
+  });
+  
+  
+  const heading = document.getElementById("heading");
+  heading.innerHTML = "Update Todo";
 
-  const data = {
-    userId: userId,
-    title: title,
-    completed: false
-  }
+  formDiv.style.display = "block";
 
-  createTodo(data);
-
-})
+  isFormVisible = !isFormVisible;
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'  // Smooth scroll effect
+});
+};
 
 // updateTodo(5);
 // deleteTodo(5);
