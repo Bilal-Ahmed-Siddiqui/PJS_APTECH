@@ -90,6 +90,12 @@ formDiv.style.display = "none";
 let isFormVisible = false;
 
 createTodoBtn.addEventListener("click", () => {
+  const heading = document.getElementById("heading");
+  heading.innerHTML = "Create Todo";
+  const userId = document.getElementById("userId");
+  const title = document.getElementById("title");
+  userId.value = "";
+  title.value = "";
   if (isFormVisible) {
     formDiv.style.display = "none";
   } else {
@@ -98,58 +104,56 @@ createTodoBtn.addEventListener("click", () => {
 
   isFormVisible = !isFormVisible;
   const submitBtn = document.getElementById("submitBtn");
-  
+
   submitBtn.addEventListener("click", (e) => {
     e.preventDefault();
     const userId = document.getElementById("userId").value;
     const title = document.getElementById("title").value;
-  
+
     const data = {
       userId: userId,
       title: title,
       completed: false,
     };
-  
+
     createTodo(data);
     formDiv.style.display = "none";
     isFormVisible = !isFormVisible;
   });
 });
 
-
 const handleUpdate = (id) => {
   axios
-  .get(`${BASE_URL}/${id}`)
-  .then((response) => {
-    if (response.status === 200) {
-      const userId = document.getElementById("userId");
-      const title = document.getElementById("title");
-      userId.value = response.data.userId;
-      title.value = response.data.title;
-    } else {
-      console.log("error", response.status);
-    }
-  })
-  .catch((error) => console.log(error));
+    .get(`${BASE_URL}/${id}`)
+    .then((response) => {
+      if (response.status === 200) {
+        const userId = document.getElementById("userId");
+        const title = document.getElementById("title");
+        userId.value = response.data.userId;
+        title.value = response.data.title;
+      } else {
+        console.log("error", response.status);
+      }
+    })
+    .catch((error) => console.log(error));
   const submitBtn = document.getElementById("submitBtn");
-  
+
   submitBtn.addEventListener("click", (e) => {
     e.preventDefault();
     const userId = document.getElementById("userId").value;
     const title = document.getElementById("title").value;
-    
+
     const data = {
       userId: userId,
       title: title,
       completed: false,
     };
-    
-    updateTodo(id,data);
+
+    updateTodo(id, data);
     formDiv.style.display = "none";
     isFormVisible = !isFormVisible;
   });
-  
-  
+
   const heading = document.getElementById("heading");
   heading.innerHTML = "Update Todo";
 
@@ -158,8 +162,8 @@ const handleUpdate = (id) => {
   isFormVisible = !isFormVisible;
   window.scrollTo({
     top: 0,
-    behavior: 'smooth'  // Smooth scroll effect
-});
+    behavior: "smooth", // Smooth scroll effect
+  });
 };
 
 // updateTodo(5);
